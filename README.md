@@ -51,6 +51,31 @@ Antes de comenzar, asegúrate de tener instalado el siguiente software:
 3.  [**Android Studio**](https://developer.android.com/studio): (Necesario para configurar y ejecutar el Emulador de Android)
 
 ---
+## 📁 Estructura del Proyecto
+
+La estructura principal de carpetas del proyecto está organizada para separar las responsabilidades:
+
+```bash
+Frontend-Spofity/
+├── app/
+│   └── (Pantallas principales, ej: login, home, search, library)
+├── assets/
+│   └── images/
+│       └── (Imágenes, íconos y logos de la app)
+├── components/
+│   └── (Componentes reutilizables, ej: Boton, Card, MiniPlayer)
+├── constants/
+│   └── (Archivos de configuración, ej: colores, fuentes, temas)
+├── hooks/
+│   └── (Hooks personalizados, ej: useAudioPlayer)
+├── scripts/
+│   └── (Scripts de utilidad para el proyecto)
+├── .gitignore
+├── app.json         # Configuración de Expo (ícono, splash screen, etc.)
+├── package.json     # Lista de dependencias y scripts
+└── tsconfig.json    # Configuración de TypeScript
+```
+---
 
 ## 🚀 Instalación y Ejecución Local
 
@@ -94,4 +119,4 @@ Sigue estos pasos para ejecutar el proyecto en tu entorno local:
     npm run web
     ```
 
-¡Y listo! 🎉 La aplicación se compilará y se abrirá automáticamente en la plataforma que elegiste.
+¡Y listo! 🎉 La aplicación se compilará y se abrirá automáticamente en la plataforma que elegiste
