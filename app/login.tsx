@@ -4,15 +4,16 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';
 import React from 'react';
 import {
-    Image,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
 } from 'react-native';
+import BrandLogo from '../components/brand-logo';
+import OutlineButton from '../components/ui/OutlineButton';
+import PrimaryButton from '../components/ui/PrimaryButton';
 
 // Define el componente de la pantalla de login.
 export default function LoginScreen() {
@@ -25,13 +26,7 @@ export default function LoginScreen() {
         end={{ x: 1, y: 1 }}
       >
         {/* Logo */}
-        <View style={styles.logoWrap}>
-          <Image
-            source={require('../assets/images/react-logo.png')}
-            style={styles.logo}
-            resizeMode="contain"
-          />
-        </View>
+        <BrandLogo size={72} circleSize={120} />
 
         {/* Username input */}
         <Text style={styles.label}>Nombre de usuario</Text>
@@ -42,29 +37,16 @@ export default function LoginScreen() {
         />
 
         {/* Primary button */}
-        <TouchableOpacity style={styles.primaryButton} activeOpacity={0.85}>
-          <Text style={styles.primaryButtonText}>Continuar</Text>
-        </TouchableOpacity>
+        <PrimaryButton title="Continuar" />
 
         {/* Small center dot */}
         <Text style={styles.centerDot}>•</Text>
 
         {/* Alternative methods */}
-        <TouchableOpacity style={styles.outlineButton} activeOpacity={0.8}>
-          <Text style={styles.outlineButtonText}>Continuar con email</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.outlineButton} activeOpacity={0.8}>
-          <Text style={styles.outlineButtonText}>Continuar con telefono</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.outlineButton} activeOpacity={0.8}>
-          <Text style={styles.outlineButtonText}>Continuar con Google</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.outlineButton} activeOpacity={0.8}>
-          <Text style={styles.outlineButtonText}>Continuar con Apple</Text>
-        </TouchableOpacity>
+        <OutlineButton title="Continuar con email" />
+        <OutlineButton title="Continuar con telefono" />
+        <OutlineButton title="Continuar con Google" />
+        <OutlineButton title="Continuar con Apple" />
 
         {/* Register link */}
         <View style={styles.registerWrap}>

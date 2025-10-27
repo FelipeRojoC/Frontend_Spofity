@@ -4,15 +4,16 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';
 import React from 'react';
 import {
-  Image,
   Platform,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
 } from 'react-native';
+import BrandLogo from '../components/brand-logo';
+import OutlineButton from '../components/ui/OutlineButton';
+import PrimaryButton from '../components/ui/PrimaryButton';
 
 // Define el componente de la pantalla de registro.
 export default function RegisterScreen() {
@@ -25,13 +26,7 @@ export default function RegisterScreen() {
         end={{ x: 1, y: 1 }}
       >
         {/* Logo arriba */}
-        <View style={styles.logoWrap}>
-          <Image
-            source={require('../assets/images/react-logo.png')}
-            style={styles.logo}
-            resizeMode="contain"
-          />
-        </View>
+        <BrandLogo size={72} circleSize={120} />
 
         {/* Large title (multi-line) */}
         <Text style={styles.title}>Regístrate{`\n`}para empezar{`\n`}a escuchar{`\n`}contenido</Text>
@@ -55,21 +50,14 @@ export default function RegisterScreen() {
         />
 
         {/* Primary button */}
-        <TouchableOpacity style={styles.primaryButton} activeOpacity={0.85}>
-          <Text style={styles.primaryButtonText}>Siguiente</Text>
-        </TouchableOpacity>
+        <PrimaryButton title="Siguiente" />
 
         {/* Small center dot */}
         <Text style={styles.centerDot}>•</Text>
 
         {/* Alternative signup methods */}
-        <TouchableOpacity style={styles.outlineButton} activeOpacity={0.8}>
-          <Text style={styles.outlineButtonText}>Registrarse con Google</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.outlineButton} activeOpacity={0.8}>
-          <Text style={styles.outlineButtonText}>Registrarse con Apple</Text>
-        </TouchableOpacity>
+        <OutlineButton title="Registrarse con Google" />
+        <OutlineButton title="Registrarse con Apple" />
 
         {/* Link to login */}
         <View style={styles.registerWrap}>
