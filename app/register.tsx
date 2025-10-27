@@ -4,14 +4,14 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';
 import React from 'react';
 import {
-    Image,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 // Define el componente de la pantalla de registro.
@@ -48,7 +48,7 @@ export default function RegisterScreen() {
 
         <Text style={styles.label}>Usar numero de teléfono</Text>
         <TextInput
-          placeholder="+34 6XX XXX XXX"
+          placeholder="+569 7672 8541"
           placeholderTextColor="rgba(255,255,255,0.6)"
           style={styles.input}
           keyboardType="phone-pad"
