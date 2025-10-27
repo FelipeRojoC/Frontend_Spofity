@@ -1,24 +1,34 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+// app/_layout.tsx
+
+// Importa el componente Stack de expo-router, que permite la navegación tipo "mazo de cartas".
 import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import React from 'react';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
-
+// Define el layout (distribución) principal de la aplicación.
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    // Stack es el componente principal que envuelve todas las pantallas.
+    <Stack>
+      {/* Define la pantalla inicial (app/index.tsx). */}
+      <Stack.Screen 
+        name="index" 
+        options={{ headerShown: false }} // Oculta la barra de título superior.
+      />
+      {/* Define la pantalla de login (app/login.tsx). */}
+      <Stack.Screen 
+        name="login" 
+        options={{ headerShown: false }} 
+      />
+      {/* Define la pantalla de registro (app/register.tsx). */}
+      <Stack.Screen 
+        name="register" 
+        options={{ headerShown: false }} 
+      />
+      {/* Define el grupo de pantallas principal (app/(tabs)). */}
+      <Stack.Screen 
+        name="(tabs)" 
+        options={{ headerShown: false }} 
+      />
+    </Stack>
   );
 }
