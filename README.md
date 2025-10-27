@@ -1,4 +1,4 @@
-# 🎵 Spofity - Frontend
+# Spofity - Frontend
 
 Este es el frontend de un **Clon de Spotify** desarrollado como parte del curso "Desarrollo de soluciones móviles". El objetivo es construir una app móvil moderna y funcional, aplicando buenas prácticas de producto y desarrollo.
 
@@ -6,7 +6,7 @@ El nombre oficial de nuestro proyecto es: **Spofity**
 
 ---
 
-## 🧑‍💻 Autores
+## Autores
 
 Este proyecto está siendo desarrollado en pareja por:
 
@@ -15,13 +15,13 @@ Este proyecto está siendo desarrollado en pareja por:
 
 ---
 
-## 📱 Acerca del Proyecto
+## Acerca del Proyecto
 
 Este repositorio contiene **exclusivamente el código del Frontend** (la aplicación móvil).
 
 La aplicación permite a los usuarios registrarse, buscar y reproducir música, gestionar su biblioteca (likes y playlists) y explorar podcasts.
 
-### 🔌 Nota sobre el Backend
+### Nota sobre el Backend
 
 El **Backend** (servidor, API REST y base de datos) se encuentra en un repositorio separado. Para que esta aplicación móvil funcione correctamente, el servidor backend debe estar ejecutándose localmente, ya que provee todos los datos del catálogo, la autenticación de usuarios y la gestión de playlists.
 
@@ -29,7 +29,7 @@ El **Backend** (servidor, API REST y base de datos) se encuentra en un repositor
 
 ---
 
-## 🛠️ Stack Tecnológico
+## Stack Tecnológico
 
 Tecnologías principales utilizadas para este proyecto frontend:
 
@@ -42,7 +42,7 @@ Tecnologías principales utilizadas para este proyecto frontend:
 
 ---
 
-## 📋 Prerrequisitos
+## Prerrequisitos
 
 Antes de comenzar, asegúrate de tener instalado el siguiente software:
 
@@ -51,7 +51,7 @@ Antes de comenzar, asegúrate de tener instalado el siguiente software:
 3.  [**Android Studio**](https://developer.android.com/studio): (Necesario para configurar y ejecutar el Emulador de Android)
 
 ---
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 La estructura principal de carpetas del proyecto está organizada para separar las responsabilidades:
 
