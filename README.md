@@ -2,8 +2,6 @@
 
 Este es el frontend de un **Clon de Spotify** desarrollado como parte del curso "Desarrollo de soluciones móviles". El objetivo es construir una app móvil moderna y funcional, aplicando buenas prácticas de producto y desarrollo.
 
-El nombre oficial de nuestro proyecto es: **Spofity**
-
 ---
 
 ## Autores
@@ -77,7 +75,7 @@ Frontend-Spofity/
 ```
 ---
 
-## 🚀 Instalación y Ejecución Local
+## Instalación y Ejecución Local
 
 Sigue estos pasos para ejecutar el proyecto en tu entorno local:
 
