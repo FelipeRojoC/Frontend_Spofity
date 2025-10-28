@@ -2,11 +2,19 @@
 
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';
-import React from 'react';
-import { Image, Platform, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Animated, Platform, Pressable, StyleSheet, Text } from 'react-native';
+import BrandLogo from '../components/brand-logo';
 
 // Define el componente de la pantalla de bienvenida.
 export default function WelcomeScreen() {
+  const [isReady, setIsReady] = useState(false);
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    setIsReady(true);
+  }, []);
+
   return (
     <LinearGradient
       colors={['#4C63E9', '#9747FF']}
@@ -14,18 +22,30 @@ export default function WelcomeScreen() {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-      <Link href={'/login' as unknown as any}>
-        <View style={styles.clickArea}>
-          <View style={styles.logoWrap}>
-            <Image
-              source={require('../assets/images/react-logo.png')}
-              style={styles.logo}
-              resizeMode="contain"
-            />
-          </View>
-          <Text style={styles.title}>Spofity</Text>
-        </View>
-          </Link>
+      <Link href={'/login' as unknown as any} asChild>
+        <Pressable
+          onPressIn={() => {
+            Animated.spring(scaleAnim, {
+              toValue: 0.95,
+              useNativeDriver: true,
+            }).start();
+          }}
+          onPressOut={() => {
+            Animated.spring(scaleAnim, {
+              toValue: 1,
+              useNativeDriver: true,
+            }).start();
+          }}
+        >
+          <Animated.View style={[
+            styles.clickArea,
+            { transform: [{ scale: scaleAnim }] }
+          ]}>
+            <BrandLogo size={100} circleSize={180} />
+            <Text style={styles.title}>Spofity</Text>
+          </Animated.View>
+        </Pressable>
+      </Link>
     </LinearGradient>
   );
 }// Define los estilos para esta pantalla.

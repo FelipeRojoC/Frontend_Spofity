@@ -1,12 +1,12 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import {
-    Platform,
-    Pressable,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native';
 
 // Componente para los filtros superiores (Todas, Música, Podcast)
@@ -28,8 +28,17 @@ function FilterTabs() {
 
 // Componente para las tarjetas recientes (rectangulares)
 function RecentCard() {
+  const [pressed, setPressed] = React.useState(false);
+
   return (
-    <Pressable>
+    <Pressable
+      onPressIn={() => setPressed(true)}
+      onPressOut={() => setPressed(false)}
+      style={({ pressed }) => [
+        { transform: [{ scale: pressed ? 0.98 : 1 }] },
+        { opacity: pressed ? 0.9 : 1 },
+      ]}
+    >
       <View style={styles.recentCard}>
         <View style={styles.recentThumbnail} />
         <View style={styles.recentInfo}>
@@ -44,7 +53,12 @@ function RecentCard() {
 // Componente para las tarjetas cuadradas (sugerencias y nuevos lanzamientos)
 function SquareCard() {
   return (
-    <Pressable>
+    <Pressable
+      style={({ pressed }) => [
+        { transform: [{ scale: pressed ? 0.98 : 1 }] },
+        { opacity: pressed ? 0.9 : 1 },
+      ]}
+    >
       <View style={styles.squareCard}>
         <View style={styles.squareThumbnail} />
         <Text style={styles.squareTitle}>Título</Text>
