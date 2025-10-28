@@ -1,13 +1,13 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Pressable,
-  Platform,
+    Platform,
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 
 // Componente para los filtros superiores (Todas, Música, Podcast)
 function FilterTabs() {
