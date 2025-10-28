@@ -116,5 +116,3 @@ Sigue estos pasos para ejecutar el proyecto en tu entorno local:
     ```bash
     npm run web
     ```
-
-¡Y listo! 🎉 La aplicación se compilará y se abrirá automáticamente en la plataforma que elegiste
