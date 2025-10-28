@@ -8,12 +8,12 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 import BrandLogo from '../components/brand-logo';
 import OutlineButton from '../components/ui/OutlineButton';
 import PrimaryButton from '../components/ui/PrimaryButton';
+import ValidatedInput from '../components/ui/ValidatedInput';
 
 // Define el componente de la pantalla de login.
 export default function LoginScreen() {
@@ -29,11 +29,18 @@ export default function LoginScreen() {
         <BrandLogo size={72} circleSize={120} />
 
         {/* Username input */}
-        <Text style={styles.label}>Nombre de usuario</Text>
-        <TextInput
+        <ValidatedInput
+          label="Nombre de usuario"
           placeholder="Introduce tu usuario"
-          placeholderTextColor="rgba(255,255,255,0.6)"
-          style={styles.input}
+          validationRules={[
+            {
+              test: (value) => value.length >= 3,
+              message: "El nombre de usuario debe tener al menos 3 caracteres"
+            }
+          ]}
+          onValidationChange={(isValid) => {
+            console.log('Username validation:', isValid);
+          }}
         />
 
         {/* Primary button */}

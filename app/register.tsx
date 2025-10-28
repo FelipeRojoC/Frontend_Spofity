@@ -8,12 +8,12 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 import BrandLogo from '../components/brand-logo';
 import OutlineButton from '../components/ui/OutlineButton';
 import PrimaryButton from '../components/ui/PrimaryButton';
+import ValidatedInput from '../components/ui/ValidatedInput';
 
 // Define el componente de la pantalla de registro.
 export default function RegisterScreen() {
@@ -32,21 +32,35 @@ export default function RegisterScreen() {
         <Text style={styles.title}>Regístrate{`\n`}para empezar{`\n`}a escuchar{`\n`}contenido</Text>
 
         {/* Inputs */}
-        <Text style={styles.label}>Dirección de email</Text>
-        <TextInput
+        <ValidatedInput
+          label="Dirección de email"
           placeholder="correo@ejemplo.com"
-          placeholderTextColor="rgba(255,255,255,0.6)"
-          style={styles.input}
           keyboardType="email-address"
           autoCapitalize="none"
+          validationRules={[
+            {
+              test: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+              message: "Por favor ingresa un email válido"
+            }
+          ]}
+          onValidationChange={(isValid) => {
+            console.log('Email validation:', isValid);
+          }}
         />
 
-        <Text style={styles.label}>Usar numero de teléfono</Text>
-        <TextInput
+        <ValidatedInput
+          label="Usar numero de teléfono"
           placeholder="+569 7672 8541"
-          placeholderTextColor="rgba(255,255,255,0.6)"
-          style={styles.input}
           keyboardType="phone-pad"
+          validationRules={[
+            {
+              test: (value) => /^\+?[\d\s-]{8,}$/.test(value),
+              message: "Por favor ingresa un número de teléfono válido"
+            }
+          ]}
+          onValidationChange={(isValid) => {
+            console.log('Phone validation:', isValid);
+          }}
         />
 
         {/* Primary button */}
