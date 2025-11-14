@@ -24,6 +24,16 @@ export default function RootLayout() {
         name="register" 
         options={{ headerShown: false }} 
       />
+      {/* Define la pantalla de edición de perfil (app/editprofile.tsx). */}
+      <Stack.Screen 
+        name="editprofile" 
+        options={{ headerShown: false }} 
+      />
+      {/* Define la pantalla de gestión de plan (app/spofityplan.tsx). */}
+      <Stack.Screen 
+        name="spofityplan" 
+        options={{ headerShown: false }} 
+      />
       {/* Define el grupo de pantallas principal (app/(tabs)). */}
       <Stack.Screen 
         name="(tabs)" 
