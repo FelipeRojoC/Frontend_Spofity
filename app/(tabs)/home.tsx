@@ -1,5 +1,6 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
+import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
 import {
   Platform,
   Pressable,
@@ -10,40 +11,48 @@ import {
 } from 'react-native';
 
 // Componente para los filtros superiores (Todas, Música, Podcast)
-function FilterTabs() {
+function FilterTabs({ selected, onSelect }: { selected: 'Todas' | 'Música' | 'Podcast'; onSelect: (s: 'Todas' | 'Música' | 'Podcast') => void }) {
   return (
     <View style={styles.filterContainer}>
-      <Pressable style={[styles.filterTab, styles.filterTabActive]}>
-        <Text style={styles.filterTextActive}>Todas</Text>
+      <Pressable
+        onPress={() => onSelect('Todas')}
+        style={[styles.filterTab, selected === 'Todas' && styles.filterTabActive]}
+      >
+        <Text style={selected === 'Todas' ? styles.filterTextActive : styles.filterText}>Todas</Text>
       </Pressable>
-      <Pressable style={styles.filterTab}>
-        <Text style={styles.filterText}>Música</Text>
+      <Pressable
+        onPress={() => onSelect('Música')}
+        style={[styles.filterTab, selected === 'Música' && styles.filterTabActive]}
+      >
+        <Text style={selected === 'Música' ? styles.filterTextActive : styles.filterText}>Música</Text>
       </Pressable>
-      <Pressable style={styles.filterTab}>
-        <Text style={styles.filterText}>Podcast</Text>
+      <Pressable
+        onPress={() => onSelect('Podcast')}
+        style={[styles.filterTab, selected === 'Podcast' && styles.filterTabActive]}
+      >
+        <Text style={selected === 'Podcast' ? styles.filterTextActive : styles.filterText}>Podcast</Text>
       </Pressable>
     </View>
   );
 }
 
 // Componente para las tarjetas recientes (rectangulares)
-function RecentCard() {
-  const [pressed, setPressed] = React.useState(false);
+function RecentCard({ title = 'Título de la canción', subtitle = 'Artista • Álbum' }: { title?: string; subtitle?: string }) {
+  const router = useRouter();
 
   return (
     <Pressable
-      onPressIn={() => setPressed(true)}
-      onPressOut={() => setPressed(false)}
+      onPress={() => router.push(`/song?title=${encodeURIComponent(title || '')}` as any)}
       style={({ pressed }) => [
-        { transform: [{ scale: pressed ? 0.98 : 1 }] },
-        { opacity: pressed ? 0.9 : 1 },
+        { transform: [{ scale: pressed ? 0.985 : 1 }] },
+        { opacity: pressed ? 0.92 : 1 },
       ]}
     >
       <View style={styles.recentCard}>
         <View style={styles.recentThumbnail} />
         <View style={styles.recentInfo}>
-          <Text style={styles.recentTitle}>Título de la canción</Text>
-          <Text style={styles.recentSubtitle}>Artista • Álbum</Text>
+          <Text style={styles.recentTitle}>{title || 'Sin título'}</Text>
+          <Text style={styles.recentSubtitle}>{subtitle}</Text>
         </View>
       </View>
     </Pressable>
@@ -51,18 +60,56 @@ function RecentCard() {
 }
 
 // Componente para las tarjetas cuadradas (sugerencias y nuevos lanzamientos)
-function SquareCard() {
+function SquareCard({ title = 'Título', subtitle = 'Artista' }: { title?: string; subtitle?: string }) {
+  const router = useRouter();
+
   return (
     <Pressable
+      onPress={() => router.push(`/album?name=${encodeURIComponent(title || '')}` as any)}
       style={({ pressed }) => [
-        { transform: [{ scale: pressed ? 0.98 : 1 }] },
-        { opacity: pressed ? 0.9 : 1 },
+        { transform: [{ scale: pressed ? 0.985 : 1 }] },
+        { opacity: pressed ? 0.92 : 1 },
       ]}
     >
       <View style={styles.squareCard}>
         <View style={styles.squareThumbnail} />
-        <Text style={styles.squareTitle}>Título</Text>
-        <Text style={styles.squareSubtitle}>Artista</Text>
+        <Text style={styles.squareTitle}>{title}</Text>
+        <Text style={styles.squareSubtitle}>{subtitle}</Text>
+      </View>
+    </Pressable>
+  );
+}
+
+function ArtistCard({ name = 'Artista' }: { name?: string }) {
+  const router = useRouter();
+
+  return (
+    <Pressable
+      onPress={() => router.push(`/artist?name=${encodeURIComponent(name || '')}` as any)}
+      style={({ pressed }) => [{ transform: [{ scale: pressed ? 0.98 : 1 }] }, { opacity: pressed ? 0.9 : 1 }]}
+    >
+      <View style={styles.artistCard}>
+        <View style={styles.artistAvatar} />
+        <Text style={styles.artistName}>{name}</Text>
+      </View>
+    </Pressable>
+  );
+}
+
+function PodcastCard({ title = 'Podcast' }: { title?: string }) {
+  const router = useRouter();
+
+  return (
+    <Pressable
+      onPress={() => router.push(`/podcast?title=${encodeURIComponent(title || '')}` as any)}
+      style={({ pressed }) => [{ transform: [{ scale: pressed ? 0.98 : 1 }] }, { opacity: pressed ? 0.9 : 1 }]}
+    >
+      <View style={styles.podcastCard}>
+        <View style={styles.podcastThumb} />
+        <View style={{ marginLeft: 12 }}>
+          <Text style={styles.recentTitle}>{title}</Text>
+          <Text style={styles.recentSubtitle}>Episodio • Duración</Text>
+        </View>
       </View>
     </Pressable>
   );
@@ -81,6 +128,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 }
 
 export default function HomeScreen() {
+  const [filter, setFilter] = useState<'Todas' | 'Música' | 'Podcast'>('Todas');
   return (
     <ScrollView style={styles.container}>
       <LinearGradient
@@ -89,42 +137,51 @@ export default function HomeScreen() {
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
       >
-        <FilterTabs />
+        <FilterTabs selected={filter} onSelect={setFilter} />
 
-        {/* Sección Recientes */}
-        <Section title="Recientes">
-          <View style={styles.recentList}>
-            <RecentCard />
-            <RecentCard />
-            <RecentCard />
-            <RecentCard />
-            <RecentCard />
-            <RecentCard />
-          </View>
-        </Section>
-
-        {/* Sección Sugerencias para hoy */}
-        <Section title="Sugerencias para hoy">
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <View style={styles.rowContainer}>
-              <SquareCard />
-              <SquareCard />
-              <SquareCard />
+        {(filter === 'Todas' || filter === 'Música') && (
+          <Section title="Recientes">
+            <View style={styles.recentList}>
+              <RecentCard title="La canción del día" subtitle="Artista • Single" />
+              <RecentCard title="Éxitos 2025" subtitle="Artista • Álbum" />
+              <RecentCard title="Indie Pop" subtitle="Artista • Álbum" />
             </View>
-          </ScrollView>
-        </Section>
+          </Section>
+        )}
 
-        {/* Sección Nuevos lanzamientos */}
-        <Section title="Nuevos lanzamientos">
-          <View style={styles.gridContainer}>
-            <SquareCard />
-            <SquareCard />
-            <SquareCard />
-            <SquareCard />
-            <SquareCard />
-            <SquareCard />
-          </View>
-        </Section>
+        {(filter === 'Todas' || filter === 'Música') && (
+          <Section title="Artistas">
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <View style={styles.rowContainer}>
+                <ArtistCard name="The Weeknd" />
+                <ArtistCard name="Dua Lipa" />
+                <ArtistCard name="Bad Bunny" />
+                <ArtistCard name="Shakira" />
+              </View>
+            </ScrollView>
+          </Section>
+        )}
+
+        {(filter === 'Todas' || filter === 'Música') && (
+          <Section title="Álbumes">
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <View style={styles.rowContainer}>
+                <SquareCard title="Album 1" subtitle="Artista A" />
+                <SquareCard title="Album 2" subtitle="Artista B" />
+                <SquareCard title="Album 3" subtitle="Artista C" />
+              </View>
+            </ScrollView>
+          </Section>
+        )}
+
+        {(filter === 'Todas' || filter === 'Podcast') && (
+          <Section title="Podcasts">
+            <View style={styles.recentList}>
+              <PodcastCard title="Historias de la música" />
+              <PodcastCard title="Charlas y playlists" />
+            </View>
+          </Section>
+        )}
       </LinearGradient>
     </ScrollView>
   );
@@ -237,5 +294,38 @@ const styles = StyleSheet.create({
   squareSubtitle: {
     color: 'rgba(255,255,255,0.7)',
     fontSize: 12,
+  },
+  /* Artist & Podcast styles */
+  artistCard: {
+    width: 100,
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  artistAvatar: {
+    width: 84,
+    height: 84,
+    borderRadius: 42,
+    backgroundColor: 'rgba(255,255,255,0.12)',
+    marginBottom: 8,
+  },
+  artistName: {
+    color: '#fff',
+    fontSize: 13,
+    fontWeight: '700',
+    textAlign: 'center',
+  },
+  podcastCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    padding: 12,
+    borderRadius: 10,
+    marginBottom: 12,
+  },
+  podcastThumb: {
+    width: 64,
+    height: 64,
+    borderRadius: 8,
+    backgroundColor: 'rgba(255,255,255,0.12)'
   },
 });
