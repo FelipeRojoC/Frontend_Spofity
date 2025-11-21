@@ -1,18 +1,39 @@
 // app/index.tsx
 
 import { LinearGradient } from 'expo-linear-gradient';
-import { Link } from 'expo-router';
-import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Platform, Pressable, StyleSheet, Text } from 'react-native';
+import { useRouter } from 'expo-router';
+import React, { useEffect, useRef } from 'react';
+import { Animated, Platform, StyleSheet, Text } from 'react-native';
 import BrandLogo from '../components/brand-logo';
 
 // Define el componente de la pantalla de bienvenida.
 export default function WelcomeScreen() {
-  const [isReady, setIsReady] = useState(false);
-  const scaleAnim = useRef(new Animated.Value(1)).current;
+  const router = useRouter();
+  const scaleAnim = useRef(new Animated.Value(0.8)).current;
+  const opacityAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    setIsReady(true);
+    // Animación del logo
+    Animated.parallel([
+      Animated.spring(scaleAnim, {
+        toValue: 1,
+        tension: 50,
+        friction: 7,
+        useNativeDriver: true,
+      }),
+      Animated.timing(opacityAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      })
+    ]).start();
+
+    // Navegar al login después de 2 segundos
+    const timeout = setTimeout(() => {
+      router.replace('/login');
+    }, 2000);
+
+    return () => clearTimeout(timeout);
   }, []);
 
   return (
@@ -22,30 +43,16 @@ export default function WelcomeScreen() {
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-      <Link href={'/login' as unknown as any} asChild>
-        <Pressable
-          onPressIn={() => {
-            Animated.spring(scaleAnim, {
-              toValue: 0.95,
-              useNativeDriver: true,
-            }).start();
-          }}
-          onPressOut={() => {
-            Animated.spring(scaleAnim, {
-              toValue: 1,
-              useNativeDriver: true,
-            }).start();
-          }}
-        >
-          <Animated.View style={[
-            styles.clickArea,
-            { transform: [{ scale: scaleAnim }] }
-          ]}>
-            <BrandLogo size={100} circleSize={180} />
-            <Text style={styles.title}>Spofity</Text>
-          </Animated.View>
-        </Pressable>
-      </Link>
+      <Animated.View style={[
+        styles.logoContainer,
+        { 
+          transform: [{ scale: scaleAnim }],
+          opacity: opacityAnim
+        }
+      ]}>
+        <BrandLogo size={100} circleSize={180} />
+        <Text style={styles.title}>Spofity</Text>
+      </Animated.View>
     </LinearGradient>
   );
 }// Define los estilos para esta pantalla.
@@ -56,20 +63,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  clickArea: {
+  logoContainer: {
     alignItems: 'center',
-  },
-  logoWrap: {
-    width: 180,
-    height: 180,
-    borderRadius: 90,
-    backgroundColor: '#ffffff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  logo: {
-    width: 100,
-    height: 100,
   },
   title: {
     color: '#ffffff',

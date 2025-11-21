@@ -1,13 +1,15 @@
+import { Ionicons } from '@expo/vector-icons';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
-    Animated,
-    Platform,
-    StyleSheet,
-    Text,
-    TextInput,
-    TextInputProps,
-    View,
-    ViewStyle,
+  Animated,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  TextInputProps,
+  TouchableOpacity,
+  View,
+  ViewStyle,
 } from 'react-native';
 
 type ValidationRule = {
@@ -20,6 +22,9 @@ interface Props extends TextInputProps {
   validationRules?: ValidationRule[];
   onValidationChange?: (isValid: boolean) => void;
   containerStyle?: ViewStyle;
+  value?: string;
+  onChangeText?: (text: string) => void;
+  forceShowError?: boolean;
 }
 
 export default function ValidatedInput({
@@ -28,12 +33,22 @@ export default function ValidatedInput({
   onValidationChange,
   containerStyle,
   style,
+  value: externalValue,
+  onChangeText: externalOnChangeText,
+  forceShowError = false,
   ...props
 }: Props) {
-  const [value, setValue] = useState('');
+  const [internalValue, setInternalValue] = useState('');
   const [error, setError] = useState('');
   const [isTouched, setIsTouched] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const borderAnimation = useMemo(() => new Animated.Value(0), []);
+
+  // Usar valor externo si se proporciona, sino usar interno
+  const value = externalValue !== undefined ? externalValue : internalValue;
+  
+  // Detectar si es un campo de contraseña
+  const isPasswordField = props.secureTextEntry === true;
 
   const validate = useCallback((text: string) => {
     if (validationRules.length === 0) return true;
@@ -52,10 +67,10 @@ export default function ValidatedInput({
   }, [validationRules, onValidationChange]);
 
   useEffect(() => {
-    if (isTouched) {
+    if (isTouched || forceShowError) {
       validate(value);
     }
-  }, [value, isTouched, validate]);
+  }, [value, isTouched, forceShowError, validate]);
 
   useEffect(() => {
     Animated.timing(borderAnimation, {
@@ -71,8 +86,10 @@ export default function ValidatedInput({
   });
 
   const handleChangeText = (text: string) => {
-    setValue(text);
-    props.onChangeText?.(text);
+    if (externalValue === undefined) {
+      setInternalValue(text);
+    }
+    externalOnChangeText?.(text);
   };
 
   return (
@@ -86,14 +103,28 @@ export default function ValidatedInput({
       >
         <TextInput
           {...props}
-          style={[styles.input, style]}
+          secureTextEntry={isPasswordField && !showPassword}
+          style={[styles.input, isPasswordField && styles.inputWithIcon, style]}
           onChangeText={handleChangeText}
           onBlur={() => setIsTouched(true)}
           placeholderTextColor="rgba(255,255,255,0.6)"
           value={value}
         />
+        {isPasswordField && (
+          <TouchableOpacity
+            onPress={() => setShowPassword(!showPassword)}
+            style={styles.eyeButton}
+            activeOpacity={0.7}
+          >
+            <Ionicons 
+              name={showPassword ? "eye-outline" : "eye-off-outline"} 
+              size={22} 
+              color="rgba(255,255,255,0.7)" 
+            />
+          </TouchableOpacity>
+        )}
       </Animated.View>
-      {error && isTouched && (
+      {error && (isTouched || forceShowError) && (
         <Animated.Text style={[styles.errorText, { opacity: borderAnimation }]}>
           {error}
         </Animated.Text>
@@ -119,11 +150,24 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     backgroundColor: 'rgba(0,0,0,0.1)',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   input: {
     flex: 1,
     color: '#fff',
     paddingHorizontal: 12,
+  },
+  inputWithIcon: {
+    paddingRight: 45,
+  },
+  eyeButton: {
+    position: 'absolute',
+    right: 0,
+    height: '100%',
+    width: 45,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   errorText: {
     color: '#ff4444',
