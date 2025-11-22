@@ -1,5 +1,6 @@
 // app/verification.tsx
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useRef, useState } from 'react';
@@ -99,6 +100,11 @@ export default function VerificationScreen() {
       console.log('Respuesta del backend (verificación):', data);
 
       if (response.ok) {
+        // Guardar token si el backend lo devuelve
+        if (data.token) {
+          await AsyncStorage.setItem('userToken', data.token);
+        }
+        
         // Código verificado correctamente
         router.replace('/(tabs)/home');
       } else {

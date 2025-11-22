@@ -1,16 +1,17 @@
 // app/register.tsx
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  KeyboardAvoidingView,
-  LogBox,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
+    KeyboardAvoidingView,
+    LogBox,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BrandLogo from '../components/brand-logo';
@@ -130,9 +131,9 @@ export default function RegisterScreen() {
 
       if (response.ok) {
         // Guardar token si el backend lo devuelve
-        // if (data.token) {
-        //   await AsyncStorage.setItem('userToken', data.token);
-        // }
+        if (data.token) {
+          await AsyncStorage.setItem('userToken', data.token);
+        }
         
         // Siempre redirigir a verificación después de un registro exitoso
         const verificationType = mode === 'email' ? 'email' : 'phone';

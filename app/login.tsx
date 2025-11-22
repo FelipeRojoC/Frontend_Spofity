@@ -1,5 +1,6 @@
 // app/login.tsx
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link, useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -121,9 +122,9 @@ export default function LoginScreen() {
 
       if (response.ok) {
         // Guardar token si el backend lo devuelve
-        // if (data.token) {
-        //   await AsyncStorage.setItem('userToken', data.token);
-        // }
+        if (data.token) {
+          await AsyncStorage.setItem('userToken', data.token);
+        }
         
         // Navegar al home
         router.replace('/(tabs)/home');
